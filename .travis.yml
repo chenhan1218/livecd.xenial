@@ -1,0 +1,37 @@
+dist: trusty
+sudo: required
+language: generic
+env:
+  global:
+  - SUITE=xenial
+  - ARCH=amd64
+  - PROJECT=ubuntu-server
+  - SUBPROJECT=live
+  - MIRROR=http://archive.ubuntu.com/ubuntu/
+  - BINARYFORMAT=iso-hybrid
+  - LB_SYSLINUX_THEME=ubuntu-xenial
+  - IMAGE_TARGETS=iso
+  - LIVE_CONFIG_DEBUG=true
+before_install:
+- sudo apt-get -qq update
+- sudo apt-get install -y ubuntu-defaults-builder
+- sudo apt-get install -y livecd-rootfs
+- wget http://archive.ubuntu.com/ubuntu/pool/main/l/livecd-rootfs/livecd-rootfs_2.441_amd64.deb
+- wget http://archive.ubuntu.com/ubuntu/pool/main/l/live-build/live-build_3.0~a57-1ubuntu29_all.deb
+# Install latest livecd-rootfs
+- sudo dpkg -i livecd-rootfs_2.441_amd64.deb live-build_3.0~a57-1ubuntu29_all.deb
+# dependency for syslinux-themes-ubuntu-xenial
+- wget http://archive.ubuntu.com/ubuntu/pool/main/s/syslinux/isolinux_6.03+dfsg-14.1_all.deb
+- wget http://archive.ubuntu.com/ubuntu/pool/main/s/syslinux-themes-ubuntu/syslinux-themes-ubuntu-xenial_12_amd64.deb
+- sudo dpkg -i syslinux-themes-ubuntu-xenial_12_amd64.deb isolinux_6.03+dfsg-14.1_all.deb
+# upgrade syslinux-common in host, used in lb_binary_syslinux
+- wget http://archive.ubuntu.com/ubuntu/pool/main/s/syslinux/syslinux-common_6.03+dfsg-14.1_all.deb
+- sudo dpkg -i syslinux-common_6.03+dfsg-14.1_all.deb
+install:
+- echo "Nothing to install"
+script:
+- cp -a /usr/share/livecd-rootfs/live-build/auto .
+- lb config --initramfs-compression=gzip
+- sudo lb build --verbose
+after_script:
+- ls -al
