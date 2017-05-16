@@ -35,3 +35,18 @@ script:
 - sudo lb build --verbose
 after_script:
 - ls -al
+deploy:
+  provider: releases
+  api_key:
+    secure: ZOaF5Toz5aNqF2y2DbbVaF3RloZJnECNA6cWxgzNmI4KblyzKmBIr7m4HjqTqQZFYohsyLV7hm7s0QGbVuSlaI+03PoMuPYNK+oqtximL7qUu6D/eng1AZT3mizh91o80fRMrVc7Pv/pgFXlinMPCNDbuWpnEq45xG0S9CspFpynJp8Y9A/w7LkI6SuLkoWXR4qP03NTRG8HM8KXbrEQyTWdYZAU5UfkaMqWhe3mutw3CmydJ414CwNVa/AiIQds+8rrGxc3MRn89Xe2iVotrEuLiO5LeXHNuXEaprfldugEMdit7/MkzGNSzsJ7Xxq2p1zToHCiwi7RCwOsCwnufbJGYTDPsTXwKU063hkXeH1DZOXLQGKaYSXwWQxKaIzEmbWIfnZsvtw6WEXJV3YH1znqpuZ37xSHz24PxEUdyCVv0UK1SfburCcWQ2YMr5YE5COpG63JWYFDGY2rYX0EtU2da7J0VlGiju2Z0vl1LfPARWUw5pi0E1gJbg1+u0BA0i4OUr6eY0f3cEFtOdVVVHoF3l5TKdRzyFtCUEUMsPKYHp4P4nHUN0jnhLtlhzM3g4XZK/zAdLTlP70pNjU8evpr4houc2YDTaP46Mrojz5YKoJq4U0VPPp9C35pbNrwp5YvvvwjEyJwStvisXzUZUGgbFRa3HgrbVD0WF31LHs=
+  file:
+    - binary.contents
+    - binary.hybrid.iso
+    - binary.log
+    - binary.packages
+    - livecd.ubuntu-server.iso
+    - livecd.ubuntu-server.manifest
+    - livecd.ubuntu-server.manifest-remove
+    - livecd.ubuntu-server.rootfs.tar.gz
+  on:
+    repo: swem/livecd.xenial
